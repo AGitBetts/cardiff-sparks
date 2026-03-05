@@ -65,7 +65,7 @@ const Index = () => {
                   </Button>
                 </Link>
                 <a href="tel:07700900000">
-                  <Button size="lg" variant="outline" className="gap-2 font-heading font-semibold text-base px-8 border-primary/30 text-secondary-foreground hover:bg-primary/10">
+                  <Button size="lg" variant="outline" className="gap-2 font-heading font-semibold text-base px-8 border-primary text-primary hover:bg-primary/10">
                     <Phone className="h-5 w-5" /> Call Now
                   </Button>
                 </a>
