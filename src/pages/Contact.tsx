@@ -44,7 +44,7 @@ const Contact = () => {
         }),
       });
 
-      const data = await reponse.json();
+      const data = await repsonse.json();
       if (data.success) {
         toast.success("Enquiry sent! We'll be in touch shortly.");
         setForm({ firstName: "", lastName: "", email: "", phone: "", requirements: ""});
