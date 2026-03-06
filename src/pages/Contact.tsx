@@ -8,6 +8,8 @@ import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
+const WORKER_URL = "https://contactformhandler.alexbetts19.workers.dev";
+
 const Contact = () => {
   const [form, setForm] = useState({
     firstName: "",
@@ -22,20 +24,40 @@ const Contact = () => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.firstName.trim() || !form.lastName.trim() || !form.email.trim() || !form.phone.trim() || !form.requirements.trim()) {
       toast.error("Please fill in all fields");
       return;
     }
     setSubmitting(true);
-    setTimeout(() => {
-      toast.success("Enquiry sent! We'll be in touch shortly.");
-      setForm({ firstName: "", lastName: "", email: "", phone: "", requirements: "" });
-      setSubmitting(false);
-    }, 1000);
-  };
 
+    try {
+      const response = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          name: `${form.firstName} ${form.lastName}`,
+          email: form.email,
+          phone: form.phone,
+          message: form.requirements,
+        }),
+      });
+
+      const data = await reponse.json();
+      if (data.success) {
+        toast.success("Enquiry sent! We'll be in touch shortly.");
+        setForm({ firstName: "", lastName: "", email: "", phone: "", requirements: ""});
+      } else {
+        toast.error("Something went wrong. Please try again or call us directly.");
+      }
+    } catch (error) {
+      toast.error("Unable to send message. Please try again or call us directly.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+  
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
